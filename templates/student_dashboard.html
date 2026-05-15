@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <nav><a href="/student">Dashboard</a> | <a href="/logout">Logout</a></nav>
+  <div class="container">
+    <h2>Student Dashboard</h2>
+    <h3 style="color:#063a6c; margin-top:6px;">Your Attendance Records</h3>
+
+    <!-- Student filter form (GET) -->
+    <form method="get" action="/student" style="display:flex; gap:12px; align-items:flex-end; margin-bottom:12px; flex-wrap:wrap;">
+      <div>
+        <label>Start Date</label>
+        <input type="date" name="start_date" value="{{ filters.start_date or '' }}">
+      </div>
+      <div>
+        <label>End Date</label>
+        <input type="date" name="end_date" value="{{ filters.end_date or '' }}">
+      </div>
+      <div>
+        <label>Session</label>
+        <select name="session">
+          <option value="ALL" {% if filters.session=='ALL' %}selected{% endif %}>ALL</option>
+          <option value="IN" {% if filters.session=='IN' %}selected{% endif %}>IN</option>
+          <option value="OUT" {% if filters.session=='OUT' %}selected{% endif %}>OUT</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit" class="small">Apply</button>
+      </div>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>IN/OUT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.date }}</td>
+          <td>{{ r.time }}</td>
+          <td>{{ r.status }}</td>
+          <td>{{ r.in_out_status or 'IN' }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4" style="text-align:center; color:#666; padding:18px;">No attendance records found for the selected filters.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+       <div style="margin-top:12px;">
+        {% set q = {'start_date': filters.start_date, 'end_date': filters.end_date, 'session': filters.session} %}
+        <a href="/student/download_csv?{{ q|urlencode }}" class="btn">Download CSV</a>
+      </div>
+
+  </div>
+</body>
+</html>

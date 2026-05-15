@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Add Student</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <nav><a href="/admin">Dashboard</a> | <a href="/admin/manage_roles">Manage Roles</a> | <a href="/logout">Logout</a></nav>
+  <div class="card" style="margin-top:40px;">
+    <h2 style="text-align:center;">Add Student</h2>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}<div class="flash">{{ messages[0] }}</div>{% endif %}
+    {% endwith %}
+    <form method="post" onsubmit="return validatePassword()">
+      <label>Full Name</label>
+      <input name="name" type="text" required>
+      <label>Username</label>
+      <input name="username" type="text" required>
+      <label>Roll No</label>
+      <input name="roll_no" type="text" required>
+      <label>Password</label>
+      <input name="password" id="password" type="password" required>
+      <p style="font-size:12px; color:#666; margin:5px 0;">Password must be at least 8 characters: 1 uppercase, 1 symbol, 2 digits</p>
+      <button type="submit">Add Student</button>
+    </form>
+  </div>
+
+  <script>
+    function validatePassword() {
+      const password = document.getElementById('password').value;
+      
+      // Check length is at least 8
+      if (password.length < 8) {
+        alert('Password must be at least 8 characters long!');
+        return false;
+      }
+      
+      // Check for at least 1 uppercase letter
+      if (!/[A-Z]/.test(password)) {
+        alert('Password must contain at least 1 uppercase letter!');
+        return false;
+      }
+      
+      // Check for at least 1 symbol
+      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+        alert('Password must contain at least 1 symbol (!@#$%^&* etc.)');
+        return false;
+      }
+      
+      // Check for at least 2 digits
+      const digitCount = (password.match(/\d/g) || []).length;
+      if (digitCount < 2) {
+        alert('Password must contain at least 2 digits!');
+        return false;
+      }
+      
+      return true;
+    }
+  </script>
+</body>
+</html>

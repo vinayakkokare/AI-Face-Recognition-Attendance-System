@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Generate Report</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+  <nav><a href="/admin">Dashboard</a> | <a href="/admin/manage_roles">Manage Roles</a> | <a href="/logout">Logout</a>
+  </nav>
+  <div class="container">
+    <h2>Generate Report (Teacher-wise)</h2>
+    <form method="post">
+      <label>Select Teacher</label>
+      <select name="teacher_id" required>
+        <option value="">-- Select --</option>
+        {% for t in teachers %}
+        <option value="{{ t.id }}" {% if selected_teacher and selected_teacher==t.id|string %}selected{% endif %}>{{
+          t.name }} ({{ t.username }})</option>
+        {% endfor %}
+      </select>
+      <label>Start Date</label><input type="date" name="start_date" value="{{ start_date or '' }}">
+      <label>End Date</label><input type="date" name="end_date" value="{{ end_date or '' }}">
+      <button type="submit">View Records</button>
+    </form>
+
+    {% if records %}
+    <h3>Records</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Roll No</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>IN/OUT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.student_name }}</td>
+          <td>{{ r.roll_no }}</td>
+          <td>{{ r.date }}</td>
+          <td>{{ r.time }}</td>
+          <td>{{ r.status }}</td>
+          <td>{{ r.in_out_status or 'IN' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <form method="post" action="/admin/download_report">
+      <input type="hidden" name="teacher_id" value="{{ selected_teacher }}">
+      <input type="hidden" name="start_date" value="{{ start_date }}">
+      <input type="hidden" name="end_date" value="{{ end_date }}">
+      <button type="submit">Download CSV</button>
+    </form>
+    {% endif %}
+  </div>
+</body>
+
+</html>

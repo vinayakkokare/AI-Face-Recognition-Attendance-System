@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Manage Roles</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <nav>
+    <a href="/admin">Dashboard</a> |
+    <a href="/admin/add_teacher">Add Teacher</a> |
+    <a href="/admin/add_student">Add Student</a> |
+    <a href="/logout">Logout</a>
+  </nav>
+
+  <div class="container">
+    <h2>Manage Roles</h2>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}<div class="flash">{{ messages[0] }}</div>{% endif %}
+    {% endwith %}
+
+    <div class="table-card">
+      <h3>Teachers</h3>
+      <table>
+        <thead>
+          <tr><th>Id</th><th>Name</th><th>Username</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for t in teachers %}
+          <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.name }}</td>
+            <td>{{ t.username }}</td>
+            <td>
+              <a href="/admin/edit_teacher/{{ t.id }}"><button class="small">Edit</button></a>
+              <form method="post" action="/admin/delete_user/{{ t.id }}" style="display:inline">
+                <button class="small" onclick="return confirm('Delete teacher?')" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-card">
+      <h3>Students</h3>
+      <table>
+        <thead>
+          <tr><th>Id</th><th>Name</th><th>Username</th><th>Roll No</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for s in students %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.username }}</td>
+            <td>{{ s.roll_no or '' }}</td>
+            <td>
+              <a href="/admin/edit_student/{{ s.id }}"><button class="small">Edit</button></a>
+              
+              <a href="/capture_face/{{ s.id }}?recapture=1"><button class="small">Capture Face</button></a>
+
+              <form method="post" action="/admin/delete_user/{{ s.id }}" style="display:inline; margin-left:6px;">
+                <button class="small" onclick="return confirm('Delete student?')" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f7ff;
+    color: #0a2540;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background: #063a6c;
+    color: white;
+    padding: 12px 18px;
+}
+
+nav a {
+    color: white;
+    margin-right: 12px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1100px;
+    margin: 22px auto;
+}
+
+.card {
+    max-width: 520px;
+    margin: 60px auto;
+    background: white;
+    padding: 22px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(6, 58, 108, 0.12);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #063a6c;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #063a6c;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"],
+select,
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d8e6;
+    border-radius: 6px;
+    margin-top: 6px;
+    box-sizing: border-box;
+}
+
+button,
+.btn {
+    background: #063a6c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-outline {
+    background: white;
+    color: #063a6c;
+    border: 1px solid #063a6c;
+}
+
+.table-card {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(6, 58, 108, 0.06);
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: white;
+}
+
+table thead {
+    background: #063a6c;
+    color: white;
+}
+
+table th,
+table td {
+    padding: 10px;
+    border: 1px solid #e6eef9;
+    text-align: left;
+    font-size: 14px;
+}
+
+.flash {
+    background: #fff3cd;
+    color: #664d03;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #ffeeba;
+}
+
+.controls {
+    margin-bottom: 14px;
+}
+
+.small {
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    background: #e6f0ff;
+    color: #063a6c;
+    border: 1px solid #d1e3ff;
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  {% if camera_active %}<meta http-equiv="refresh" content="5">{% endif %}
+</head>
+<body>
+  <nav><a href="/teacher">Dashboard</a> | <a href="/logout">Logout</a></nav>
+  <div class="container">
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}<div class="flash">{{ messages[0] }}</div>{% endif %}
+    {% endwith %}
+
+    <h2>Teacher Dashboard</h2>
+    <h3 style="color:#063a6c; margin-top:6px;">Student Attendance Records</h3>
+
+    <div class="controls">
+      <form action="/teacher/start_attendance" method="post" style="display:inline;">
+        <label style="display:inline-block; margin-right:8px;">Select Session</label>
+        <select name="in_out_status" required style="display:inline-block; margin-right:10px;">
+          <option value="IN">IN</option>
+          <option value="OUT">OUT</option>
+        </select>
+        <button type="submit" class="small" {% if camera_active %}disabled{% endif %}>Start Attendance</button>
+      </form>
+
+      <form action="/teacher/stop_attendance" method="post" style="display:inline; margin-left:10px;">
+        <button type="submit" class="small btn-outline" {% if not camera_active %}disabled{% endif %}>Stop Attendance</button>
+      </form>
+
+      <span style="margin-left:16px;" class="status-badge">
+        Camera: {{ 'Active' if camera_active else 'Inactive' }}{% if camera_active and current_session %} ({{ current_session }}){% endif %}
+      </span>
+    </div>
+
+    <!-- FILTER / SEARCH FORM (uses GET so filters appear in URL) -->
+    <form method="get" action="/teacher" style="margin-top:16px; display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
+      <div>
+        <label>Start Date</label>
+        <input type="date" name="start_date" value="{{ filters.start_date or '' }}">
+      </div>
+      <div>
+        <label>End Date</label>
+        <input type="date" name="end_date" value="{{ filters.end_date or '' }}">
+      </div>
+      <div>
+        <label>Session</label>
+        <select name="session">
+          <option value="ALL" {% if filters.session=='ALL' %}selected{% endif %}>ALL</option>
+          <option value="IN" {% if filters.session=='IN' %}selected{% endif %}>IN</option>
+          <option value="OUT" {% if filters.session=='OUT' %}selected{% endif %}>OUT</option>
+        </select>
+      </div>
+      <div>
+        <label>Search Student (name / roll)</label>
+        <input type="text" name="search" placeholder="name or roll" value="{{ filters.search or '' }}">
+      </div>
+      <div>
+        <button type="submit" class="small">Apply Filters</button>
+      </div>
+
+    </form>
+
+    <div style="height:12px; border-bottom:1px solid #e6eef9; margin:18px 0;"></div>
+
+    <p style="font-size:13px; color:#444; margin-bottom:8px;">Showing records sorted by <strong>Date</strong> and <strong>Time</strong> (newest first).</p>
+
+    <div class="table-card">
+      {% if records and records|length > 0 %}
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Roll No</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>IN/OUT</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in records %}
+          <tr>
+            <td>{{ r.student_name }}</td>
+            <td>{{ r.roll_no }}</td>
+            <td>{{ r.date }}</td>
+            <td>{{ r.time }}</td>
+            <td>{{ r.status }}</td>
+            <td>{{ r.in_out_status or 'IN' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="padding:22px; text-align:center; color:#666;">No attendance records found for the selected filters.</div>
+      {% endif %}
+    </div>
+    <br>
+    <div style="margin-top:12px;">
+        {% set q = {'start_date': filters.start_date, 'end_date': filters.end_date, 'session': filters.session, 'search': filters.search} %}
+        <a href="/teacher/download_csv?{{ q|urlencode }}" class="btn">Download CSV</a>
+
+  </div>
+</body>
+</html>
